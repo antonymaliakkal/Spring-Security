@@ -22,6 +22,6 @@ spring:
 #  level:
 #    org.springframework: DEBUG
 
-logging:
-  level:
-    root: OFF
+#logging:
+#  level:
+#    root: OFF

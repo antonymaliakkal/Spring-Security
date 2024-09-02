@@ -18,11 +18,6 @@ import java.util.ArrayList;
 @RequestMapping("/api")
 public class SecurityController {
 
-    private List<Student> studentList = new ArrayList<>(List.of(
-            new Student(1 , "antony"),
-            new Student(2 , "maliakkal")
-    ));
-
 
     @Autowired
     UserService userService;
@@ -30,20 +25,25 @@ public class SecurityController {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @GetMapping
-    public List<Student> fuc(HttpServletRequest request){
-        System.out.println("List<Student>");
-        System.out.println("Session id : "  + request.getSession().getId());
-        System.out.println((CsrfToken)request.getAttribute("_csrf"));
-        return studentList;
+    public List<Users> getAll(){
+        return userService.getAll();
+
     }
 
-    @PostMapping
-    public Users fun(@RequestBody Users users){
+    @PostMapping("/register")
+    public Users register(@RequestBody Users users){
 
         String password = encoder.encode(users.getPassword());
         System.out.println(password);
         users.setPassword(password);
         return userService.register(users);
+
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody Users user){
+
+        return  userService.verify(user);
 
     }
 
